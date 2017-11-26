@@ -1,0 +1,90 @@
+﻿html, body {
+    height: 100%;
+}
+
+.row-header {
+    padding: 10px 10px 10px 10px;
+    border-bottom: 2px solid green;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+}
+
+@media(max-width: 767px) {
+    .row-header {
+        display: none;
+    }
+}
+
+.container-full-height {
+    min-height: 100%;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    display: grid;
+    align-items: center;
+}
+
+.welcome-row {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.welcome-item {
+    border: 1px solid green;
+    border-radius: 5px;
+}
+
+.welcome-msg {
+    color: green;
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.separator {
+    border-top: 1px solid green;
+    position: relative;
+    margin: 25px 0 10px;
+    text-align: center;
+}
+
+.textSeparator {
+    background-color: #fff;
+    padding: 0 .5em;
+    position: relative;
+    color: green;
+    top: -.7em;
+}
+
+canvas {
+    position: relative;
+    background-color: transparent;
+    border: 2px solid green;
+    border-radius: 10px;
+}
+
+.room-row {
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    border: 1px solid green;
+}
+
+.trashButton {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 15px;
+    height: 15px;
+    color: white;
+    text-shadow: 2px 2px 8px black;
+    border-radius: 50%;
+    transition: all 0.9s;
+}
+
+.trashButton:hover {
+    cursor: pointer;
+    font-size: 20px;
+}

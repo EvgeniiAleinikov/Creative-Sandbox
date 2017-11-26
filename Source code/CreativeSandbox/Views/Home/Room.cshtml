@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<CreativeSandbox.Models.Room>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sandbox</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/jquery.signalR-2.2.2.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.ui.rotatable/1.1/jquery.ui.rotatable.css">
+    <script src="//cdn.jsdelivr.net/jquery.ui.rotatable/1.1/jquery.ui.rotatable.min.js"></script>
+</head>
+<body>
+    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+    <div class="row row-header">
+        <div class="col-lg-3 col-md-3 col-sm-4">
+            <a href="@Url.Action("Index","Home")"><img src="~/Content/images/logo.png" class="img-responsive" /></a>
+        </div>
+        <div class="col-lg-offset-7 col-md-offset-7 col-sm-offset-6 col-lg-2">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="border:0px">
+                    @User.Identity.GetUserName()
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="row" style="margin-top:10px; display:flex; align-items:center; margin-right: 5px; margin-left: 5px;">
+            <div class="col-lg-4 text-center">
+                <button onclick="location.href ='@Url.Action("Sandbox","Home")'" class="btn btn-danger">Leave room</button>
+                <button id="moveTool" class="btn btn-default glyphicon glyphicon-move"></button>
+                <button id="paintTool" class="btn btn-default glyphicon glyphicon-pencil"></button>
+                <button id="clearTool" class="btn btn-default glyphicon glyphicon-trash"></button>
+            </div>
+            <div class="col-lg-4 text-center" id="textId">
+                id: @Model.First().Id
+            </div>
+            <div class="col-lg-4 text-center">
+                RoomName: @Model.First().Name
+            </div>
+        </div>
+        <div class="row text-center" style="margin-top:10px; margin-right: 5px; margin-left: 5px;">
+            <div class="col">
+                <div id="imageDropZone" style="position: relative; display:inline-block;">
+                    <canvas crossorigin="anonymous" id='drawingpad' width='1300' height='500'></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Ссылка на библиотеку SignalR -->
+    <script src="/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <!--Ссылка на автоматически сгенерированный скрипт хаба SignalR -->
+    <script src="/signalr/hubs"></script>
+    <script src="~/Scripts/room.js"></script>
+</body>
+</html>

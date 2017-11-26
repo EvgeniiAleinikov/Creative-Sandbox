@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<CreativeSandbox.Models.Room>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Sandbox</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.signalR-2.2.2.js"></script>
+    <script src="~/signalr/hubs"></script>
+</head>
+<body>
+    @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+    <div class="row row-header">
+        <div class="col-lg-3 col-md-3 col-sm-4">
+            <a href="@Url.Action("Index","Home")"><img src="~/Content/images/logo.png" class="img-responsive" /></a>
+        </div>
+        <div class="col-lg-offset-7 col-md-offset-7 col-sm-offset-6 col-lg-2">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="border:0px">
+                    @User.Identity.GetUserName()
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row" style="margin-top:10px; display:flex; align-items:center;">
+            <div class="col-lg-2 col-lg-offset-4 text-center">
+                <span>WorkRooms</span>
+            </div>
+            <div class="col-lg-2">
+                <button id="addRoomButton" class="btn btn-success">Add Room</button>
+            </div>
+        </div>
+        <div class="col-lg-10 col-lg-offset-1" id="room">
+            @foreach (var room in Model)
+            {
+                <div class="row room-row" id="@room.Id" style="margin-top:10px;">
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-center">
+                        id: @room.Id
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" style="padding: 10px;">
+                        <input class="form-control" id="@room.Id" value="@room.Name" />
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 usersIn text-center" id="@room.Id">
+                        @room.UsersIn
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <button onClick="location.href ='Room?id=@room.Id'" class="btn btn-enter" id="@room.Id">Enter</button>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                        <button class="btn btn-danger" onclick="requestDeleteRoom(@room.Id);" id="@room.Id">X</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
