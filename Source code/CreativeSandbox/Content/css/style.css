@@ -88,3 +88,11 @@ canvas {
     cursor: pointer;
     font-size: 20px;
 }
+
+.carousel-control-transparent {
+    background: none !important;
+}
+
+.carousel-caption {
+    color: #5cb85c;
+}
