@@ -1,18 +1,18 @@
-﻿using CreativeSandbox.Models;
+﻿using System;
+using CreativeSandbox.Models;
 using Microsoft.AspNet.SignalR;
-using System;
 
-namespace CreativeSandbox
+namespace CreativeSandbox.Controllers
 {
     public class RoomHub : Hub
     {
-        RoomContext db = new RoomContext();
+        private readonly RoomContext _db = new RoomContext();
 
         public void ConnectToRoom(int id)
         {
-            Room room = db.Rooms.Find(id);
+            Room room = _db.Rooms.Find(id);
             room.UsersIn++;
-            db.SaveChanges();
+            _db.SaveChanges();
 
             Clients.Others.updateUsersInRoom(id, room.UsersIn);
 
@@ -23,9 +23,9 @@ namespace CreativeSandbox
 
         public void LeaveRoom(int id)
         {
-            Room room = db.Rooms.Find(id);
+            Room room = _db.Rooms.Find(id);
             room.UsersIn--;
-            db.SaveChanges();
+            _db.SaveChanges();
 
             Clients.Others.updateUsersInRoom(room.Id, room.UsersIn);
         }
@@ -67,14 +67,14 @@ namespace CreativeSandbox
 
         public void ClearAll(string id)
         {
-            db.Rooms.Find(Int32.Parse(id)).Content = null;
-            db.SaveChanges();
+            _db.Rooms.Find(Int32.Parse(id)).Content = null;
+            _db.SaveChanges();
             Clients.OthersInGroup(id).clearAll();
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            _db.Dispose();
             base.Dispose(disposing);
         }
     }

@@ -1,7 +1,7 @@
 ﻿using CreativeSandbox.Models;
 using Microsoft.AspNet.SignalR;
 
-namespace CreativeSandbox
+namespace CreativeSandbox.Controllers
 {
     public class DrawHub : Hub
     {

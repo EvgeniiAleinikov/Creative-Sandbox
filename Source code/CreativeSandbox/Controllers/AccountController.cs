@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -28,37 +25,19 @@ namespace CreativeSandbox.Controllers
             SignInManager = signInManager;
         }
 
-        public ApplicationSignInManager SignInManager
+        private ApplicationSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
+            get => _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            set => _signInManager = value;
         }
 
-        public ApplicationUserManager UserManager
+        private ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            set => _userManager = value;
         }
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -81,7 +60,7 @@ namespace CreativeSandbox.Controllers
                 }
                 else
                 {
-                    if (user.EmailConfirmed == true)
+                    if (user.EmailConfirmed)
                     {
                         ClaimsIdentity claims = await UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                         AuthenticationManager.SignOut();
@@ -91,10 +70,7 @@ namespace CreativeSandbox.Controllers
                         }, claims);
                         return RedirectToAction("Sandbox", "Home");
                     }
-                    else
-                    {
-                        ModelState.AddModelError("", "Email is not confirmed.");
-                    }
+                    ModelState.AddModelError("", "Email is not confirmed.");
                 }
             }
             return View(model);
@@ -118,15 +94,15 @@ namespace CreativeSandbox.Controllers
                 if (result.Succeeded)
                 {
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "CreativeSandbox e-mal confirmation.", "Thank you for registering on our website. Please confirm your mail by clicking on the <a href=\"" + callbackUrl + "\">link</a>." + "Sincerely CSBox.");
-
+                    if (Request.Url != null)
+                    {
+                        var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code }, Request.Url.Scheme);
+                        await UserManager.SendEmailAsync(user.Id, "CreativeSandbox e-mal confirmation.", "Thank you for registering on our website. Please confirm your mail by clicking on the <a href=\"" + callbackUrl + "\">link</a>." + " Sincerely CSBox.");
+                    }
                     return View("SendEmail");
                 }
                 AddErrors(result);
             }
-
-            // Появление этого сообщения означает наличие ошибки; повторное отображение формы
             return View(model);
         }
         
@@ -146,7 +122,6 @@ namespace CreativeSandbox.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl)
         {
-            // Запрос перенаправления к внешнему поставщику входа
             return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
         }
 
@@ -158,7 +133,6 @@ namespace CreativeSandbox.Controllers
             {
                 return RedirectToAction("Login");
             }
-            // Выполнение входа пользователя посредством данного внешнего поставщика входа, если у пользователя уже есть имя входа
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
             switch (result)
             {
@@ -173,20 +147,20 @@ namespace CreativeSandbox.Controllers
                         }
                         var user = new ApplicationUser
                         {
-                            UserName = loginInfo.Email == null ? loginInfo.DefaultUserName : loginInfo.Email,
+                            UserName = loginInfo.Email ?? loginInfo.DefaultUserName,
                             Email = loginInfo.Email
                         };
-                        var result1 = await UserManager.CreateAsync(user);
-                        if (result1.Succeeded)
+                        var identityResult = await UserManager.CreateAsync(user);
+                        if (identityResult.Succeeded)
                         {
-                            result1 = await UserManager.AddLoginAsync(user.Id, info.Login);
-                            if (result1.Succeeded)
+                            identityResult = await UserManager.AddLoginAsync(user.Id, info.Login);
+                            if (identityResult.Succeeded)
                             {
                                 await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                                 return RedirectToLocal(returnUrl);
                             }
                         }
-                        AddErrors(result1);
+                        AddErrors(identityResult);
                     }
                     return RedirectToAction("Index", "Home");
             }

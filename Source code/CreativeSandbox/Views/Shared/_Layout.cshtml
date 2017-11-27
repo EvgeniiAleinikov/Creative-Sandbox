@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CreativeSandbox</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</head>
+<body>
+    <div class="row row-header">
+        <div class="col-lg-3 col-md-3 col-sm-4">
+            <img src="~/Content/images/logo.png" class="img-responsive" />
+        </div>
+        <div class="col-lg-offset-7 col-md-offset-7 col-sm-offset-6 login-button">
+            @using (Html.BeginForm("Login", "Account", FormMethod.Get))
+            {
+                <button class="btn btn-default btn-block">Log In</button>
+            }
+        </div>
+        <div class="register-button">
+            @using (Html.BeginForm("Register", "Account", FormMethod.Get))
+            {
+                <button class="btn btn-success btn-block">Sign Up</button>
+            }
+        </div>
+    </div>
+    @RenderBody()
+</body>
+</html>

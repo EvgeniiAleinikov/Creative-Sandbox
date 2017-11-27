@@ -170,7 +170,7 @@
 
     chat.client.addImage = function (imageUrl, imageId) {
         imgId = imageId + 1;
-        $('#imageDropZone').append("<div style='top:5px; left:5px; position:absolute;' id='wrap" + imageId + "'><img id='im" + imageId + "' src='" + imageUrl + "' style='height: 100%; width: 100%;' /><div onclick='deleteImg(" + imageId + ");' class='trashButton glyphicon glyphicon-trash'></div></div>");
+        $('#imageDropZone').append("<div style='top:5px; left:5px; position:absolute;' id='wrap" + imageId + "'><img id='im" + imageId + "' src='" + imageUrl + "' style='height: 100%; width: 100%;' /><div onclick='deleteImg(" + imageId + ");' class='trash-button glyphicon glyphicon-trash'></div></div>");
         $('#wrap' + imageId).resizable({
             containment: "canvas",
             resize: function () {

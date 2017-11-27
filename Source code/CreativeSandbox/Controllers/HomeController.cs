@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using CreativeSandbox.Models;
 using CloudinaryDotNet;
@@ -11,7 +9,7 @@ namespace CreativeSandbox.Controllers
 {
     public class HomeController : Controller
     {
-        RoomContext db = new RoomContext();
+        private readonly RoomContext _db = new RoomContext();
 
         public ActionResult Index()
         {
@@ -25,7 +23,7 @@ namespace CreativeSandbox.Controllers
         [Authorize]
         public ActionResult Sandbox()
         {
-            return View(db.Rooms);
+            return View(_db.Rooms);
         }
 
         [Authorize]
@@ -33,13 +31,10 @@ namespace CreativeSandbox.Controllers
         {
             if (id == null)
                 return RedirectToAction("Sandbox");
-
-            var room = db.Rooms.Where(r => r.Id == id);
-
-            if (room.Count() == 0)
+            var room = _db.Rooms.Where(r => r.Id == id);
+            if (!room.Any())
                 return RedirectToAction("Sandbox");
-            else
-                return View(room);
+            return View(room);
         }
 
         [HttpPost]
@@ -55,29 +50,23 @@ namespace CreativeSandbox.Controllers
             Cloudinary cloudinary = new Cloudinary(account);
 
             var upload = Request.Files[0];
-
             if (upload != null)
             {
                 string fileName = System.IO.Path.GetFileName(upload.FileName);
-
                 var uploadParams = new ImageUploadParams()
                 {
                     File = new FileDescription(fileName, upload.InputStream),
                     UseFilename = true,
-                    UniqueFilename = !fileName.Contains("room")
+                    UniqueFilename = fileName != null && !fileName.Contains("room")
                 };
-
                 var urlImage = cloudinary.Upload(uploadParams).Uri.ToString();
-
-                if (fileName.Contains("room"))
+                if (fileName != null && fileName.Contains("room"))
                 {
-                    db.Rooms.Find(Int32.Parse(fileName.Replace("room", "").Replace(".png", ""))).Content = urlImage;
-                    db.SaveChanges();
+                    _db.Rooms.Find(Int32.Parse(fileName.Replace("room", "").Replace(".png", ""))).Content = urlImage;
+                    _db.SaveChanges();
                 }
-
                 return Json(urlImage);
             }
-
             return Json("error");
         }
     }

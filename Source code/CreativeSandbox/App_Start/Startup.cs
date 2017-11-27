@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using CreativeSandbox.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -18,7 +17,7 @@ namespace CreativeSandbox
             ConfigureAuth(app);
         }
 
-        public void ConfigureAuth(IAppBuilder app)
+        private void ConfigureAuth(IAppBuilder app)
         {
             app.CreatePerOwinContext(ApplicationContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
@@ -42,9 +41,9 @@ namespace CreativeSandbox
             app.UseTwitterAuthentication(
                 consumerKey: "ui8xrOW5XIp0WL1fDNzkyGrtR",
                 consumerSecret: "pfBga1wsbXP2i7nIMZAugtTnEXF401QaYqFejavOCN6hxnvNCv");
-            app.UseFacebookAuthentication(
-                appId: "146025912617481",
-                appSecret: "06aaec24edd6770e530e915eb0e95211");
+            //app.UseFacebookAuthentication(
+            //    appId: "146025912617481",
+            //    appSecret: "06aaec24edd6770e530e915eb0e95211");
             app.MapSignalR();
         }
     }

@@ -50,7 +50,7 @@
     text-align: center;
 }
 
-.textSeparator {
+.text-separator {
     background-color: #fff;
     padding: 0 .5em;
     position: relative;
@@ -72,7 +72,7 @@ canvas {
     border: 1px solid green;
 }
 
-.trashButton {
+.trash-button {
     position: absolute;
     top: 8px;
     right: 8px;
@@ -84,7 +84,7 @@ canvas {
     transition: all 0.9s;
 }
 
-.trashButton:hover {
+.trash-button:hover {
     cursor: pointer;
     font-size: 20px;
 }
@@ -95,4 +95,27 @@ canvas {
 
 .carousel-caption {
     color: #5cb85c;
+}
+
+.slider-container {
+    width: 550px;
+}
+
+.register-button {
+    width: 90px;
+    margin-left: 10px;
+}
+
+.login-button {
+    width: 90px;
+}
+
+.col {
+    padding-top: 10px;
+}
+
+.external-login-button {
+    background-color: white;
+    border: 0;
+    padding: 10px;
 }

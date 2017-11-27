@@ -11,9 +11,9 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-
     <script src="~/Scripts/jquery.signalR-2.2.2.js"></script>
     <script src="~/signalr/hubs"></script>
+    <script src="~/Scripts/room.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.ui.rotatable/1.1/jquery.ui.rotatable.css">
     <script src="//cdn.jsdelivr.net/jquery.ui.rotatable/1.1/jquery.ui.rotatable.min.js"></script>
@@ -62,11 +62,5 @@
             </div>
         </div>
     </div>
-
-    <!--Ссылка на библиотеку SignalR -->
-    <script src="/Scripts/jquery.signalR-2.2.2.min.js"></script>
-    <!--Ссылка на автоматически сгенерированный скрипт хаба SignalR -->
-    <script src="/signalr/hubs"></script>
-    <script src="~/Scripts/room.js"></script>
 </body>
 </html>

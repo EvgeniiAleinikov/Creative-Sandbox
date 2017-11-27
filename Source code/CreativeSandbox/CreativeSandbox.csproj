@@ -162,6 +162,9 @@
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\style.css" />
+    <Content Include="Content\images\demos\demo1.png" />
+    <Content Include="Content\images\demos\demo2.png" />
+    <Content Include="Content\images\demos\demo3.png" />
     <Content Include="Content\images\Facebook.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\Twitter.png" />
@@ -196,6 +199,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\room.js" />
+    <Content Include="Scripts\sandbox.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -232,6 +236,9 @@
     <Content Include="Views\Account\SendEmail.cshtml" />
     <Content Include="Scripts\jquery-3.0.0.min.map" />
     <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
